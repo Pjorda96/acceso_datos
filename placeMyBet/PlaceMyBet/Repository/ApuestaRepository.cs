@@ -31,8 +31,8 @@ namespace PlaceMyBet.Models
                 List<Apuesta> apuestas = new List<Apuesta>();
                 while (res.Read())
                 {
-                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetDouble(2) + " " + res.GetInt32(3));
-                    a = new Apuesta(res.GetInt32(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3));
+                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetDouble(2) + " " + res.GetInt32(3) + " " + res.GetInt32(4));
+                    a = new Apuesta(res.GetInt32(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetInt32(4));
                     apuestas.Add(a);
                 }
 
@@ -86,6 +86,42 @@ namespace PlaceMyBet.Models
             {
                 con.Open();
                 command.ExecuteNonQuery();
+                con.Close();
+
+                this.Recalculate(a.MercadoId);
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+            }
+        }
+
+        internal void Recalculate(int mercadoId)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+
+            try
+            {
+                con.Open();
+                command.CommandText = "get sum(importe) from boleto;";
+                MySqlDataReader resOver = command.ExecuteReader();
+                resOver = resOver * 0.4; // pending to refactor
+
+                Debug.WriteLine(resOver);
+                command.CommandText = "get sum(importe) from boleto;";
+                MySqlDataReader resUnder = command.ExecuteReader();
+                resOver = resUnder * 0.6; // pending to refactor
+
+                var total = resOver + resUnder;
+
+                var probOver = resOver / total;
+                var cuotaOver = 0.95 / probOver;
+
+                var probUnder = resOver / total;
+                var cuotaUnder = 0.95 / probUnder;
+
+                command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
                 con.Close();
             }
             catch (MySqlException e)
