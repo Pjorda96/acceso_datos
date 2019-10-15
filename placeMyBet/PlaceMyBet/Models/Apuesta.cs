@@ -7,12 +7,13 @@ namespace PlaceMyBet.Models
 {
     public class Apuesta
     {
-        public Apuesta(int id, int mercadoId, double cuota, int boletoId)
+        public Apuesta(int id, int mercadoId, double cuota, int boletoId, int campo)
         {
             Id = id;
             MercadoId = mercadoId;
             Cuota = cuota;
             BoletoId = boletoId;
+            Campo = campo;
         }
 
         public int Id { get; set; }
@@ -22,6 +23,8 @@ namespace PlaceMyBet.Models
         public double Cuota { get; set; }
 
         public int BoletoId { get; set; }
+
+        public int Campo { get; set; }
     }
 
     public class ApuestaDTO
@@ -35,5 +38,7 @@ namespace PlaceMyBet.Models
         public int MercadoId { get; set; }
 
         public double Cuota { get; set; }
+
+        public int BoletoId { get; set; }
     }
 }
