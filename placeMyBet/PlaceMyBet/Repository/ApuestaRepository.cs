@@ -11,8 +11,8 @@ namespace PlaceMyBet.Models
     {
         private MySqlConnection Connect()
         {
-            string comnString = "Server=127.0.0.1;Port=3306;Database=dam;Uid=root;password=;SslMode=none";
-            //"Server=tcp:place-my-bet.database.windows.net,1433;InitialCatalog=PlaceMyBet;PersistSecurityInfo=False;UserID=placeMyBet;Password=2dawApuesta;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;ConnectionTimeout=30;"
+            string comnString = "Server=127.0.0.1;Port=3306;Database=placeMyBet;Uid=root;password=;SslMode=none";
+            //string comnString = "Server=tcp:place-my-bet.database.windows.net,1433;InitialCatalog=PlaceMyBet;PersistSecurityInfo=False;UserID=placeMyBet;Password=2dawApuesta;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;ConnectionTimeout=30;";
             MySqlConnection con = new MySqlConnection(comnString);
             return con;
         }
@@ -32,8 +32,7 @@ namespace PlaceMyBet.Models
                 List<Apuesta> apuestas = new List<Apuesta>();
                 while (res.Read())
                 {
-                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetDouble(2) + " " + res.GetInt32(3) + " " + res.GetInt32(4));
-                    a = new Apuesta(res.GetInt32(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetInt32(4));
+                    a = new Apuesta(res.GetInt32(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetDouble(4), res.GetInt32(5), res.GetDateTime(6));
                     apuestas.Add(a);
                 }
 
@@ -51,7 +50,7 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "select * from apuesta";
+            command.CommandText = "SELECT email, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
 
             try
             {
@@ -62,8 +61,7 @@ namespace PlaceMyBet.Models
                 List<ApuestaDTO> apuestas = new List<ApuestaDTO>();
                 while (res.Read())
                 {
-                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetDouble(2) + " " + res.GetInt32(3));
-                    a = new ApuestaDTO(res.GetInt32(1), res.GetDouble(2));
+                    a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetDouble(4));
                     apuestas.Add(a);
                 }
 
@@ -81,7 +79,7 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "insert into partido(mercado, cuota, boleto) values ('" + a.MercadoId + "','" + a.Cuota + "','" + a.BoletoId + "');";
+            command.CommandText = "insert into partido(usuario, importe, mercado, cuota, tipo, fecha) values ('" + a.UsuarioId + "','" + a.Importe + "','" + a.MercadoId + a.Cuota + +a.TipoApuesta + a.Fecha +"');";
 
             try
             {
@@ -89,7 +87,7 @@ namespace PlaceMyBet.Models
                 command.ExecuteNonQuery();
                 con.Close();
 
-                this.Recalculate(a.MercadoId);
+                //this.Recalculate(a.MercadoId);
             }
             catch (MySqlException e)
             {
@@ -97,38 +95,38 @@ namespace PlaceMyBet.Models
             }
         }
 
-        internal void Recalculate(int mercadoId)
-        {
-            MySqlConnection con = Connect();
-            MySqlCommand command = con.CreateCommand();
+        //internal void Recalculate(int mercadoId)
+        //{
+        //    MySqlConnection con = Connect();
+        //    MySqlCommand command = con.CreateCommand();
 
-            try
-            {
-                con.Open();
-                command.CommandText = "get sum(importe) from boleto;";
-                MySqlDataReader resOver = command.ExecuteReader();
-                resOver = resOver * 0.4; // pending to refactor
+        //    try
+        //    {
+        //        con.Open();
+        //        command.CommandText = "get sum(importe) from boleto;";
+        //        MySqlDataReader resOver = command.ExecuteReader();
+        //        resOver = resOver * 0.4; // pending to refactor
 
-                Debug.WriteLine(resOver);
-                command.CommandText = "get sum(importe) from boleto;";
-                MySqlDataReader resUnder = command.ExecuteReader();
-                resOver = resUnder * 0.6; // pending to refactor
+        //        Debug.WriteLine(resOver);
+        //        command.CommandText = "get sum(importe) from boleto;";
+        //        MySqlDataReader resUnder = command.ExecuteReader();
+        //        resOver = resUnder * 0.6; // pending to refactor
 
-                var total = resOver + resUnder;
+        //        var total = resOver + resUnder;
 
-                var probOver = resOver / total;
-                var cuotaOver = 0.95 / probOver;
+        //        var probOver = resOver / total;
+        //        var cuotaOver = 0.95 / probOver;
 
-                var probUnder = resOver / total;
-                var cuotaUnder = 0.95 / probUnder;
+        //        var probUnder = resOver / total;
+        //        var cuotaUnder = 0.95 / probUnder;
 
-                command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
-                con.Close();
-            }
-            catch (MySqlException e)
-            {
-                Debug.WriteLine("Error al conectar con la base de datos");
-            }
-        }
+        //        command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
+        //        con.Close();
+        //    }
+        //    catch (MySqlException e)
+        //    {
+        //        Debug.WriteLine("Error al conectar con la base de datos");
+        //    }
+        //}
     }
 }
