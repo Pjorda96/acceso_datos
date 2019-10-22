@@ -87,7 +87,7 @@ namespace PlaceMyBet.Models
                 command.ExecuteNonQuery();
                 con.Close();
 
-                //this.Recalculate(a.MercadoId);
+                this.Recalculate(a.MercadoId);
             }
             catch (MySqlException e)
             {
@@ -95,38 +95,45 @@ namespace PlaceMyBet.Models
             }
         }
 
-        //internal void Recalculate(int mercadoId)
-        //{
-        //    MySqlConnection con = Connect();
-        //    MySqlCommand command = con.CreateCommand();
+        internal void Recalculate(int mercadoId)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
 
-        //    try
-        //    {
-        //        con.Open();
-        //        command.CommandText = "get sum(importe) from boleto;";
-        //        MySqlDataReader resOver = command.ExecuteReader();
-        //        resOver = resOver * 0.4; // pending to refactor
+            try
+            {
+                con.Open();
+                command.CommandText = "SELECT sum(importe) from apuesta WHERE tipoApuesta = 0;";
+                MySqlDataReader queryOver = command.ExecuteReader();
+                int resOver = 0;
+                while (queryOver.Read())
+                {
+                    resOver = queryOver.GetInt32(0);
+                }
 
-        //        Debug.WriteLine(resOver);
-        //        command.CommandText = "get sum(importe) from boleto;";
-        //        MySqlDataReader resUnder = command.ExecuteReader();
-        //        resOver = resUnder * 0.6; // pending to refactor
+                command.CommandText = "SELECT sum(importe) from apuesta WHERE tipoApuesta = 1;";
+                MySqlDataReader queryUnder = command.ExecuteReader();
+                int resUnder = 0;
+                while (queryUnder.Read())
+                {
+                    resUnder = queryUnder.GetInt32(0);
+                }
 
-        //        var total = resOver + resUnder;
+                var total = resOver + resUnder;
 
-        //        var probOver = resOver / total;
-        //        var cuotaOver = 0.95 / probOver;
+                var probOver = resOver / total;
+                var cuotaOver = 0.95 / probOver;
 
-        //        var probUnder = resOver / total;
-        //        var cuotaUnder = 0.95 / probUnder;
+                var probUnder = resOver / total;
+                var cuotaUnder = 0.95 / probUnder;
 
-        //        command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
-        //        con.Close();
-        //    }
-        //    catch (MySqlException e)
-        //    {
-        //        Debug.WriteLine("Error al conectar con la base de datos");
-        //    }
-        //}
+                command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
+                con.Close();
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+            }
+        }
     }
 }
