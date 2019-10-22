@@ -173,7 +173,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ApuestaController.cs" />
-    <Compile Include="Controllers\BoletoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MercadoController.cs" />
     <Compile Include="Controllers\PartidoController.cs" />
@@ -182,10 +181,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Apuesta.cs" />
-    <Compile Include="Models\Boleto.cs" />
     <Compile Include="Models\Mercado.cs" />
     <Compile Include="Repository\ApuestaRepository.cs" />
-    <Compile Include="Repository\BoletoRepository.cs" />
     <Compile Include="Repository\MercadoRepository.cs" />
     <Compile Include="Models\Partido.cs" />
     <Compile Include="Repository\PartidoRepository.cs" />
