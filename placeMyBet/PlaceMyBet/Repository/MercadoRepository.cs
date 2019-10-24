@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
+using PlaceMyBet.Constants;
 
 namespace PlaceMyBet.Models
 {
@@ -11,9 +12,8 @@ namespace PlaceMyBet.Models
     {
         private MySqlConnection Connect()
         {
-            string comnString = "Server=127.0.0.1;Port=3306;Database=placeMyBet;Uid=root;password=;SslMode=none";
-            //string comnString = "Server=tcp:place-my-bet.database.windows.net,1433;InitialCatalog=PlaceMyBet;PersistSecurityInfo=False;UserID=placeMyBet;Password=2dawApuesta;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;ConnectionTimeout=30;";
-            MySqlConnection con = new MySqlConnection(comnString);
+            MySqlConnection con = new MySqlConnection(MySQL.MySqlConnection);
+            //MySqlConnection con = new MySqlConnection(comnString);
             return con;
         }
 
