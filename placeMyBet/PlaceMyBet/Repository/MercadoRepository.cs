@@ -17,11 +17,11 @@ namespace PlaceMyBet.Models
             return con;
         }
 
-        internal List<Mercado> Retrieve()
+        internal List<Mercado> Retrieve(int id)
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "select * from mercado";
+            command.CommandText = "select * from mercado where id = " + id;
 
             try
             {
@@ -32,7 +32,6 @@ namespace PlaceMyBet.Models
                 List<Mercado> mercados = new List<Mercado>();
                 while (res.Read())
                 {
-                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetInt32(2) + " " + res.GetInt32(3) + " " + res.GetDouble(4));
                     m = new Mercado(res.GetInt32(0), res.GetInt32(1), res.GetInt32(2), res.GetInt32(3), res.GetDouble(4));
                     mercados.Add(m);
                 }
@@ -52,6 +51,36 @@ namespace PlaceMyBet.Models
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
             command.CommandText = "select * from mercado";
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                MercadoDTO m = null;
+                List<MercadoDTO> mercados = new List<MercadoDTO>();
+                while (res.Read())
+                {
+                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetInt32(1) + " " + res.GetInt32(2) + " " + res.GetInt32(3) + " " + res.GetDouble(4));
+                    m = new MercadoDTO(res.GetInt32(2), res.GetInt32(3), res.GetDouble(4));
+                    mercados.Add(m);
+                }
+
+                con.Close();
+                return mercados;
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+                return null;
+            }
+        }
+
+        internal List<MercadoDTO> RetrieveByPartido(int id)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT tipo, cOver, cUnder FROM mercado WHERE partido = " + id;
 
             try
             {

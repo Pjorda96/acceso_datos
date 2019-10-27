@@ -20,9 +20,21 @@ namespace PlaceMyBet.Controllers
         }
 
         // GET: api/Mercado/5
-        public string Get(int id)
+        public IEnumerable<Mercado> Get(int id)
         {
-            return "value";
+            var repo = new MercadoRepository();
+            List<Mercado> mercados = repo.Retrieve(id);
+
+            return mercados;
+        }
+
+        // GET: api/Mercado?partido=partido
+        public IEnumerable<MercadoDTO> GetByPartido(int id)
+        {
+            var repo = new MercadoRepository();
+            List<MercadoDTO> m = repo.RetrieveByPartido(id);
+
+            return m;
         }
 
         // POST: api/Mercado
