@@ -13,7 +13,6 @@ namespace PlaceMyBet.Models
         private MySqlConnection Connect()
         {
             MySqlConnection con = new MySqlConnection(MySQL.MySqlConnection);
-            //MySqlConnection con = new MySqlConnection(comnString);
             return con;
         }
 
