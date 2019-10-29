@@ -35,9 +35,10 @@ namespace PlaceMyBet.Models
 
     public class ApuestaDTO
     {
-        public ApuestaDTO(String usuarioEmail, int tipoApuesta, double cuota, int tipo, double importe)
+        public ApuestaDTO(String usuarioEmail, int partido, int tipoApuesta, double cuota, int tipo, double importe)
         {
             UsuarioEmail = usuarioEmail;
+            Partido = partido;
             TipoApuesta = tipoApuesta;
             Cuota = cuota;
             Tipo = tipo;
@@ -45,6 +46,8 @@ namespace PlaceMyBet.Models
         }
 
         public String UsuarioEmail { get; set; }
+
+        public int Partido{ get; set; }
 
         public int TipoApuesta { get; set; }
 

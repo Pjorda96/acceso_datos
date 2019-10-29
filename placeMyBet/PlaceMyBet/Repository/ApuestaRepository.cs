@@ -50,7 +50,7 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "SELECT email, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
+            command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
 
             try
             {
@@ -61,7 +61,67 @@ namespace PlaceMyBet.Models
                 List<ApuestaDTO> apuestas = new List<ApuestaDTO>();
                 while (res.Read())
                 {
-                    a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetDouble(4));
+                    a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetInt32(2), res.GetDouble(3), res.GetInt32(4), res.GetDouble(5));
+                    apuestas.Add(a);
+                }
+
+                con.Close();
+                return apuestas;
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+                return null;
+            }
+        }
+
+        internal List<ApuestaDTO> RetrieveByUserEmail(string email)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT email, partido, tipo, tipoApuesta, cuota, importe FROM apuesta a JOIN usuario u JOIN mercado m WHERE email = '"
+                + email + "' AND m.id = (SELECT mercado FROM apuesta JOIN usuario WHERE email = '"
+                + email + "')";
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                ApuestaDTO a = null;
+                List<ApuestaDTO> apuestas = new List<ApuestaDTO>();
+                while (res.Read())
+                {
+                    a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetInt32(2), res.GetDouble(3), res.GetInt32(4), res.GetDouble(5));
+                    apuestas.Add(a);
+                }
+
+                con.Close();
+                return apuestas;
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+                return null;
+            }
+        }
+
+        internal List<ApuestaDTO> RetrieveByMercado(int mercado)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT email, partido, tipo, tipoApuesta, cuota, importe FROM apuesta a JOIN usuario u JOIN mercado m WHERE m.id = " + mercado;
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                ApuestaDTO a = null;
+                List<ApuestaDTO> apuestas = new List<ApuestaDTO>();
+                while (res.Read())
+                {
+                    a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetInt32(2), res.GetDouble(3), res.GetInt32(4), res.GetDouble(5));
                     apuestas.Add(a);
                 }
 
