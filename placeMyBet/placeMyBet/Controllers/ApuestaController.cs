@@ -35,6 +35,7 @@ namespace PlaceMyBet.Controllers
         }
 
         // GETByMercado: api/Apuesta?email=email
+        [Authorize(Roles = "Admin")]
         public IEnumerable<ApuestaDTO> GetByMercado(int mercado)
         {
             var repo = new ApuestaRepository();
@@ -44,6 +45,7 @@ namespace PlaceMyBet.Controllers
         }
 
         // POST: api/Apuesta
+        [Authorize]
         public void Post([FromBody]Apuesta apuesta)
         {
             var repo = new ApuestaRepository();
