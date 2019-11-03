@@ -18,13 +18,16 @@ namespace PlaceMyBet.Models
 
         public int Id { get; set; }
 
-        public int PartidoId { get; set; }
-
-        public int Tipo { get; set; } // IEnumerable
+        public int Tipo { get; set; }
 
         public double CUnder { get; set; }
 
         public double COver { get; set; }
+
+        public int PartidoId { get; set; }
+        public Partido Partido { get; set; }
+
+        public List<Apuesta> Apuesta { get; set; }
     }
 
     public class MercadoDTO

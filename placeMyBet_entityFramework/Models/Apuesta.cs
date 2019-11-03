@@ -1,4 +1,5 @@
-﻿using System;
+﻿using placeMyBet.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,17 +21,19 @@ namespace PlaceMyBet.Models
 
         public int Id { get; set; }
 
-        public int UsuarioId { get; set; }
-
         public double Importe { get; set; }
-
-        public int MercadoId { get; set; }
 
         public double Cuota { get; set; }
 
         public int TipoApuesta { get; set; }
 
         public DateTime Fecha { get; set; }
+
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
+
+        public int MercadoId { get; set; }
+        public Mercado Mercado { get; set; }
     }
 
     public class ApuestaDTO

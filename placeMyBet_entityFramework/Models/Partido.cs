@@ -22,6 +22,8 @@ namespace PlaceMyBet.Models
         public string Visitante { get; set; }
 
         public DateTime Hora { get; set; }
+
+        public List<Mercado> Mercado { get; set; }
     }
 
     public class PartidoDTO
