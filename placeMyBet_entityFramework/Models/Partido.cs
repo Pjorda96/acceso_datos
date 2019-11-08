@@ -15,6 +15,11 @@ namespace PlaceMyBet.Models
             Hora = hora;
         }
 
+        public Partido ()
+        {
+
+        }
+
         public int Id { get; set; }
 
         public string Local { get; set; }

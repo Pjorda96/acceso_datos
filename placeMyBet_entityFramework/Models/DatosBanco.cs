@@ -19,6 +19,11 @@ namespace placeMyBet.Models
             UsuarioId = usuarioId;
         }
 
+        public DatosBanco ()
+        {
+
+        }
+
         public int Id { get; set; }
 
         public string Alias { get; set; }

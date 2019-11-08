@@ -4,48 +4,37 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
+using placeMyBet.Models;
 using PlaceMyBet.Constants;
 
 namespace PlaceMyBet.Models
 {
     public class PartidoRepository
     {
-        //private MySqlConnection Connect()
-        //{
-        //    MySqlConnection con = new MySqlConnection(MySQL.MySqlConnection);
-        //    return con;
-        //}
-
         internal List<Partido> Retrieve()
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "select * from partido";
+            var partidos = new List<Partido>();
 
-            //try
-            //{
-            //    con.Open();
-            //    MySqlDataReader res = command.ExecuteReader();
+            using (var context = new PlaceMyBetContext())
+            {
+                partidos = context.Partidos.ToList();
+            }
 
-            //    Partido p = null;
-            //    List<Partido> partidos = new List<Partido>();
-            //    while (res.Read())
-            //    {
-            //        Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetString(1) + " " + res.GetString(2) + " " + res.GetDateTime(3));
-            //        p = new Partido(res.GetInt32(0), res.GetString(1), res.GetString(2), res.GetDateTime(3));
-            //        partidos.Add(p);
-            //    }
+            return partidos;
+        }
 
-            //    con.Close();
-            //    return partidos;
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //    return null;
-            //}
+        internal Partido Retrieve(int id)
+        {
+            var partido = new Partido();
 
-            return null;
+            using (var context = new PlaceMyBetContext())
+            {
+                partido = context.Partidos
+                    .Where(p => p.Id == id)
+                    .FirstOrDefault();
+            }
+
+            return partido;
         }
 
         internal List<PartidoDTO> RetrieveDTO()
@@ -82,20 +71,10 @@ namespace PlaceMyBet.Models
 
         internal void Save(Partido p)
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "insert into partido(local, visitante, hora) values ('" + p.Local + "','" + p.Visitante + "','" + p.Hora + "');";
+            var context = new PlaceMyBetContext();
 
-            //try
-            //{
-            //    con.Open();
-            //    command.ExecuteNonQuery();
-            //    con.Close();
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //}
+            context.Partidos.Add(p);
+            context.SaveChanges();
         }
     }
 }

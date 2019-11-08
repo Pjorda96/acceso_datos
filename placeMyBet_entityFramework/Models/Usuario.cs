@@ -8,9 +8,9 @@ namespace placeMyBet.Models
 {
     public class Usuario
     {
-        public Usuario(int id, string dni, string nombre, string apellidos, string email, DateTime birdthDate, double saldo, Boolean active)
+        public Usuario(int usuarioId, string dni, string nombre, string apellidos, string email, DateTime birdthDate, double saldo, Boolean active)
         {
-            Id = id;
+            UsuarioId = usuarioId;
             DNI = dni;
             Nombre = nombre;
             Apellidos = apellidos;
@@ -20,7 +20,12 @@ namespace placeMyBet.Models
             Active = active;
         }
 
-        public int Id { get; set; }
+        public Usuario ()
+        {
+
+        }
+
+        public int UsuarioId { get; set; }
 
         public string DNI { get; set; }
 
@@ -38,6 +43,6 @@ namespace placeMyBet.Models
 
         public List<DatosBanco> DatosBanco { get; set; }
 
-        public Apuesta Apuesta { get; set; }
+        public List<Apuesta> Apuesta { get; set; }
     }
 }

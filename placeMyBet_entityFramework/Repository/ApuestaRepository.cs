@@ -4,46 +4,38 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
+using placeMyBet.Models;
 using PlaceMyBet.Constants;
 
 namespace PlaceMyBet.Models
 {
     public class ApuestaRepository
     {
-        //private MySqlConnection Connect()
-        //{
-        //    MySqlConnection con = new MySqlConnection(MySQL.MySqlConnection);
-        //    return con;
-        //}
-
         internal List<Apuesta> Retrieve()
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "select * from apuesta";
+            var apuestas = new List<Apuesta>();
 
-            //try
-            //{
-            //    //con.Open();
-            //    //MySqlDataReader res = command.ExecuteReader();
+            using (var context = new PlaceMyBetContext())
+            {
+                apuestas = context.Apuestas.ToList();
+            }
 
-            //    Apuesta a = null;
-            //    List<Apuesta> apuestas = new List<Apuesta>();
-            //    //while (res.Read())
-            //    //{
-            //    //    a = new Apuesta(res.GetInt32(0), res.GetInt32(1), res.GetDouble(2), res.GetInt32(3), res.GetDouble(4), res.GetInt32(5), res.GetDateTime(6));
-            //    //    apuestas.Add(a);
-            //    //}
+            return apuestas;
+        }
 
-            //    //con.Close();
-            //    return apuestas;
-            //}
-            //catch (/*MySqlException e*/)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //    return null;
-            //}
-            return null;
+
+        internal Apuesta Retrieve(int id)
+        {
+            var apuesta = new Apuesta();
+
+            using (var context = new PlaceMyBetContext())
+            {
+                apuesta = context.Apuestas
+                    .Where(a => a.Id == id)
+                    .FirstOrDefault();
+            }
+
+            return apuesta;
         }
 
         internal List<ApuestaDTO> RetrieveDTO()

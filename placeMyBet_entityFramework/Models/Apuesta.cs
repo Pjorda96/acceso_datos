@@ -19,6 +19,11 @@ namespace PlaceMyBet.Models
             Fecha = fecha;
         }
 
+        public Apuesta ()
+        {
+
+        }
+
         public int Id { get; set; }
 
         public double Importe { get; set; }

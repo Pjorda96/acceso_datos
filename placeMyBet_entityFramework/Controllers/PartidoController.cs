@@ -11,10 +11,10 @@ namespace PlaceMyBet.Controllers
     public class PartidoController : ApiController
     {
         // GET: api/Partido
-        public IEnumerable<PartidoDTO> Get()
+        public IEnumerable<Partido> Get()
         {
             var repo = new PartidoRepository();
-            List<PartidoDTO> partidos = repo.RetrieveDTO();
+            List<Partido> partidos = repo.Retrieve();
 
             return partidos;
         }
@@ -22,9 +22,9 @@ namespace PlaceMyBet.Controllers
         // GET: api/Partido/5
         public Partido Get(int id)
         {
-            //var repo = new PartidoRepository();
-            //Partido p = repo.Retrieve();
-            return null;
+            var repo = new PartidoRepository();
+            Partido p = repo.Retrieve(id);
+            return p;
         }
 
         // POST: api/Partido
