@@ -49,7 +49,7 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
+            command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado m WHERE m.id = mercado";
 
             try
             {
