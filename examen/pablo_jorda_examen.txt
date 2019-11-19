@@ -1,4 +1,5 @@
-https://www.github.com/Pjorda96/acceso_datos/placeMyBet (rama: feature/examen)
+https://github.com/Pjorda96/acceso_datos/tree/feature/examen/placeMyBet
+(rama: feature/examen carpeta: placeMyBet)
 
 ficheros:
 
