@@ -1,0 +1,16 @@
+https://www.github.com/Pjorda96/acceso_datos/placeMyBet (rama: feature/examen)
+
+ficheros:
+
+- ejercicio1
+Controllers/LigasControllers.cs
+Models/Ligas.cs
+Repository/LigasRepository.cs
+
+-ejercicio2
+Repository/ApuestaRepository.cs		137
+Controllers/ApuestaController.cs	47
+
+- ejercicio3
+Repository/ApuestaRepository.cs		60
+Controllers/ApuestaController.cs	168 y 213

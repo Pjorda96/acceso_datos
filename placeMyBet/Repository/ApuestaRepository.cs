@@ -165,8 +165,10 @@ namespace PlaceMyBet.Models
         }
         /*** Fin Ejercicio 2 ***/
 
-        internal void Save(Apuesta a)
+        /*** Ejercicio 3 ***/
+        internal string Save(Apuesta a)
         {
+            /*** Fin Ejercicio 3 ***/
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
             
@@ -195,6 +197,7 @@ namespace PlaceMyBet.Models
             catch (MySqlException e)
             {
                 Debug.WriteLine("Error al conectar con la base de datos");
+                return "Error al conectar con la base de datos";
             }
 
             command.CommandText = "insert into apuesta(usuario, importe, mercado, cuota, tipoApuesta, fecha) values (" + a.UsuarioId + "," + a.Importe + "," + a.MercadoId + "," + cuota.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," +a.TipoApuesta + ",'" + a.Fecha + "');";
@@ -206,10 +209,25 @@ namespace PlaceMyBet.Models
                 con.Close();
 
                 this.Recalculate(a.MercadoId);
+
+                /*** Ejercicio 3 ***/
+                con.Open();
+                command.CommandText = "SELECT COUNT(id) FROM apuesta";
+                MySqlDataReader res = command.ExecuteReader();
+
+                int apuestasNumber = 0;
+                while (res.Read())
+                {
+                    apuestasNumber = res.GetInt32(0);
+                }
+
+                return "El usuario tiene " + apuestasNumber + " apuestas actualmente";
+                /*** Ejercicio 3 ***/
             }
             catch (MySqlException e)
             {
                 Debug.WriteLine("Error al conectar con la base de datos");
+                return "Error al conectar con la base de datos";
             }
         }
 
