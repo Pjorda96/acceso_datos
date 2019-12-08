@@ -1,14 +1,83 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      Add a product{{categoria && ' | ' + categoria | titlecase}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea></ion-textarea>
+    </ion-item>
+
+    <ion-item [style.margin-bottom.px]="categoria && 30">
+      <ion-label>Categoria</ion-label>
+      <ion-select placeholder="Selecciona" (ionChange)="onSelectChange($event)">
+        <ion-select-option value="tecnologia">Tecnología</ion-select-option>
+        <ion-select-option value="hogar">Hogar</ion-select-option>
+        <ion-select-option value="inmobiliaria">Inmobiliaria</ion-select-option>
+        <ion-select-option value="motor">Motor</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div *ngIf="categoria === 'motor'">
+      <ion-item>
+        <ion-label>Tipo de vehículo</ion-label>
+        <ion-select placeholder="Tipo">
+          <ion-select-option value="coche">Coche</ion-select-option>
+          <ion-select-option value="Moto">Moto</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Kilómetros</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+    </div>
+
+    <div *ngIf="categoria === 'inmobiliaria'">
+      <ion-item>
+        <ion-label position="floating">Metros cuadrados</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Número de Baños</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Número de habitaciones</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Localidad</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+    </div>
+
+    <div *ngIf="categoria === 'tecnologia'">
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select placeholder="Estado">
+          <ion-select-option value="perfecto">Perfecto estado</ion-select-option>
+          <ion-select-option value="usado">Usado</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+    <ion-item [style.margin-top.px]="categoria && 30">
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
   </div>
 </ion-content>
