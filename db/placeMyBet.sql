@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `apuesta` (
   `importe` double NOT NULL,
   `mercado` int(11) NOT NULL,
   `cuota` double NOT NULL,
-  `tipo` int(11) NOT NULL,
+  `tipoApuesta` int(11) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `apuesta_usuario_fk` (`usuario`),
@@ -33,8 +33,9 @@ CREATE TABLE IF NOT EXISTS `apuesta` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla placemybet.apuesta: ~0 rows (aproximadamente)
+DELETE FROM `apuesta`;
 /*!40000 ALTER TABLE `apuesta` DISABLE KEYS */;
-INSERT INTO `apuesta` (`id`, `usuario`, `importe`, `mercado`, `cuota`, `tipo`, `fecha`) VALUES
+INSERT INTO `apuesta` (`id`, `usuario`, `importe`, `mercado`, `cuota`, `tipoApuesta`, `fecha`) VALUES
 	(1, 1, 10, 2, 1.9, 1, '2019-10-19 19:39:09');
 /*!40000 ALTER TABLE `apuesta` ENABLE KEYS */;
 
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `datos_banco` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla placemybet.datos_banco: ~0 rows (aproximadamente)
+DELETE FROM `datos_banco`;
 /*!40000 ALTER TABLE `datos_banco` DISABLE KEYS */;
 /*!40000 ALTER TABLE `datos_banco` ENABLE KEYS */;
 
@@ -69,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `mercado` (
   CONSTRAINT `partido_fk` FOREIGN KEY (`partido`) REFERENCES `partido` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla placemybet.mercado: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla placemybet.mercado: ~3 rows (aproximadamente)
+DELETE FROM `mercado`;
 /*!40000 ALTER TABLE `mercado` DISABLE KEYS */;
 INSERT INTO `mercado` (`id`, `partido`, `tipo`, `cOver`, `cUnder`) VALUES
 	(1, 1, 1.5, 1.5, 3),
@@ -84,12 +87,17 @@ CREATE TABLE IF NOT EXISTS `partido` (
   `visitante` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla placemybet.partido: ~0 rows (aproximadamente)
+DELETE FROM `partido`;
 /*!40000 ALTER TABLE `partido` DISABLE KEYS */;
 INSERT INTO `partido` (`id`, `local`, `visitante`, `hora`) VALUES
-	(1, 'Valencia', 'Madrid', '2019-10-19 19:25:28');
+	(1, 'Valencia', 'Madrid', '2019-10-19 19:25:28'),
+	(2, 'Real Madrid', 'Farça', '2019-10-19 19:25:28'),
+	(3, 'sfgjmy', 'zdfgmn', '2019-10-19 19:25:28'),
+	(4, 'Sevilla', 'Betis', '2019-10-19 19:25:28'),
+	(5, 'Villa-Real', 'Getafe', '0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `partido` ENABLE KEYS */;
 
 -- Volcando estructura para tabla placemybet.usuario
@@ -106,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla placemybet.usuario: ~0 rows (aproximadamente)
+DELETE FROM `usuario`;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`id`, `dni`, `nombre`, `apellidos`, `email`, `birdth_date`, `saldo`, `active`) VALUES
 	(1, '12345678\r\n', 'Pablo', 'Jorda', 'email@email.com', '2019-10-19 19:28:49', 10, 0);

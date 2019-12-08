@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using placeMyBet.Models;
-using PlaceMyBet.Constants;
 
 namespace PlaceMyBet.Models
 {
@@ -17,7 +15,7 @@ namespace PlaceMyBet.Models
 
             using (var context = new PlaceMyBetContext())
             {
-                apuestas = context.Apuestas.ToList();
+                apuestas = context.Apuestas.Include(a => a.Mercado).ToList();
             }
 
             return apuestas;
@@ -38,35 +36,21 @@ namespace PlaceMyBet.Models
             return apuesta;
         }
 
+        public ApuestaDTO ToDTO(Apuesta a)
+        {
+            return new ApuestaDTO(a.UsuarioId, a.MercadoId, a.TipoApuesta, a.Cuota, a.Mercado.Tipo, a.Importe);
+        }
+
         internal List<ApuestaDTO> RetrieveDTO()
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
+            var apuestas = new List<ApuestaDTO>();
 
-            //try
-            //{
-            //    con.Open();
-            //    MySqlDataReader res = command.ExecuteReader();
+            using (var context = new PlaceMyBetContext())
+            {
+                apuestas = context.Apuestas.Include(a => a.Mercado).Select(a => ToDTO(a)).ToList();
+            }
 
-            //    ApuestaDTO a = null;
-            //    List<ApuestaDTO> apuestas = new List<ApuestaDTO>();
-            //    while (res.Read())
-            //    {
-            //        a = new ApuestaDTO(res.GetString(0), res.GetInt32(1), res.GetInt32(2), res.GetDouble(3), res.GetInt32(4), res.GetDouble(5));
-            //        apuestas.Add(a);
-            //    }
-
-            //    con.Close();
-            //    return apuestas;
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //    return null;
-            //}
-
-            return null;
+            return apuestas;
         }
 
         internal List<ApuestaDTO> RetrieveByUserEmail(string email)
@@ -135,63 +119,58 @@ namespace PlaceMyBet.Models
 
         internal void Save(Apuesta a)
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "insert into partido(usuario, importe, mercado, cuota, tipo, fecha) values ('" + a.UsuarioId + "','" + a.Importe + "','" + a.MercadoId + a.Cuota + +a.TipoApuesta + a.Fecha + "');";
+            try
+            {
+                using (var context = new PlaceMyBetContext())
+                {
+                    var apuesta = new Apuesta
+                    {
+                        UsuarioId = a.UsuarioId,
+                        Importe = a.Importe,
+                        MercadoId = a.MercadoId,
+                        Cuota = a.Cuota,
+                        TipoApuesta = a.TipoApuesta,
+                        Fecha = a.Fecha,
+                    };
+                    context.Apuestas.Add(apuesta);
+                    context.SaveChanges();
 
-            //try
-            //{
-            //    con.Open();
-            //    command.ExecuteNonQuery();
-            //    con.Close();
-
-            //    this.Recalculate(a.MercadoId);
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //}
+                    this.Recalculate(a.MercadoId);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error al añadir un apuesta");
+            }
         }
 
         internal void Recalculate(int mercadoId)
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
+            try
+            {
+                using (var context = new PlaceMyBetContext())
+                {
+                    double resOver = context.Apuestas.Where(m1 => m1.MercadoId == mercadoId & m1.TipoApuesta == 0).Select(i1 => i1.Importe).Sum();
+                    double resUnder = context.Apuestas.Where(m2 => m2.MercadoId == mercadoId & m2.TipoApuesta == 1).Select(i2 => i2.Importe).Sum();
 
-            //try
-            //{
-            //    con.Open();
-            //    command.CommandText = "SELECT sum(importe) from apuesta WHERE tipoApuesta = 0;";
-            //    MySqlDataReader queryOver = command.ExecuteReader();
-            //    int resOver = 0;
-            //    while (queryOver.Read())
-            //    {
-            //        resOver = queryOver.GetInt32(0);
-            //    }
+                    double total = resOver + resUnder;
 
-            //    command.CommandText = "SELECT sum(importe) from apuesta WHERE tipoApuesta = 1;";
-            //    MySqlDataReader queryUnder = command.ExecuteReader();
-            //    int resUnder = 0;
-            //    while (queryUnder.Read())
-            //    {
-            //        resUnder = queryUnder.GetInt32(0);
-            //    }
+                    double probOver = resOver / total;
+                    double cuotaOver = 0.95 / probOver;
 
-            //    var total = resOver + resUnder;
+                    double probUnder = resUnder / total;
+                    double cuotaUnder = 0.95 / probUnder;
 
-            //    var probOver = resOver / total;
-            //    var cuotaOver = 0.95 / probOver;
-
-            //    var probUnder = resOver / total;
-            //    var cuotaUnder = 0.95 / probUnder;
-
-            //    command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
-            //    con.Close();
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //}
+                    var mercado = context.Mercados.First(m => m.Id == mercadoId);
+                    mercado.COver = cuotaOver;
+                    mercado.CUnder = cuotaUnder;
+                    context.SaveChanges();
+                }
+            }
+                catch (Exception e)
+            {
+                Debug.WriteLine("Error al añadir un apuesta");
+            }
         }
     }
 }

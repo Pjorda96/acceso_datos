@@ -49,7 +49,7 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado";
+            command.CommandText = "SELECT email, partido, tipoApuesta, cuota, tipo, importe FROM apuesta INNER JOIN usuario INNER JOIN mercado m WHERE m.id = mercado";
 
             try
             {
@@ -138,7 +138,35 @@ namespace PlaceMyBet.Models
         {
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "insert into partido(usuario, importe, mercado, cuota, tipo, fecha) values ('" + a.UsuarioId + "','" + a.Importe + "','" + a.MercadoId + a.Cuota + +a.TipoApuesta + a.Fecha + "');";
+            
+            if (a.TipoApuesta == 0)
+            {
+                command.CommandText = "SELECT cOver FROM mercado WHERE id = " + a.MercadoId;
+            }
+            else if (a.TipoApuesta == 1)
+            {
+                command.CommandText = "SELECT cUnder FROM mercado WHERE id = " + a.MercadoId;
+            }
+
+            double cuota = 0.0;
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                while (res.Read())
+                {
+                    cuota = res.GetDouble(0);
+                }
+
+                con.Close();
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Error al conectar con la base de datos");
+            }
+
+            command.CommandText = "insert into apuesta(usuario, importe, mercado, cuota, tipoApuesta, fecha) values (" + a.UsuarioId + "," + a.Importe + "," + a.MercadoId + "," + cuota.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," +a.TipoApuesta + ",'" + a.Fecha + "');";
 
             try
             {
@@ -169,7 +197,9 @@ namespace PlaceMyBet.Models
                 {
                     resOver = queryOver.GetInt32(0);
                 }
-
+                con.Close();
+                
+                con.Open();
                 command.CommandText = "SELECT sum(importe) from apuesta WHERE tipoApuesta = 1;";
                 MySqlDataReader queryUnder = command.ExecuteReader();
                 int resUnder = 0;
@@ -177,16 +207,19 @@ namespace PlaceMyBet.Models
                 {
                     resUnder = queryUnder.GetInt32(0);
                 }
+                con.Close();
 
-                var total = resOver + resUnder;
+                double total = resOver + resUnder;
 
-                var probOver = resOver / total;
-                var cuotaOver = 0.95 / probOver;
+                double probOver = resOver / total;
+                double cuotaOver = 0.95 / probOver;
 
-                var probUnder = resOver / total;
-                var cuotaUnder = 0.95 / probUnder;
+                double probUnder = resUnder / total;
+                double cuotaUnder = 0.95 / probUnder;
 
-                command.CommandText = "update mercado set cOver = " + cuotaOver + ", cUnder = " + cuotaUnder + " where id = " + mercadoId + " ;";
+                con.Open();
+                command.CommandText = "update mercado set cOver = " + cuotaOver.ToString(System.Globalization.CultureInfo.InvariantCulture) + ", cUnder = " + cuotaUnder.ToString(System.Globalization.CultureInfo.InvariantCulture) + " where id = " + mercadoId + " ;";
+                command.ExecuteNonQuery();
                 con.Close();
             }
             catch (MySqlException e)
