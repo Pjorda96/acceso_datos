@@ -27,6 +27,10 @@ namespace placeMyBet
             );
 
             config.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+
+            //Evito las referencias circulares al trabajar con Entity FrameWork
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
         }
     }
 }

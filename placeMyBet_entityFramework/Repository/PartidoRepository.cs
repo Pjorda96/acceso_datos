@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Web;
-using MySql.Data.MySqlClient;
 using placeMyBet.Models;
-using PlaceMyBet.Constants;
 
 namespace PlaceMyBet.Models
 {
@@ -37,36 +33,21 @@ namespace PlaceMyBet.Models
             return partido;
         }
 
+        public PartidoDTO ToDTO(Partido p)
+        {
+            return new PartidoDTO(p.Local, p.Visitante);
+        }
+
         internal List<PartidoDTO> RetrieveDTO()
         {
-            //MySqlConnection con = Connect();
-            //MySqlCommand command = con.CreateCommand();
-            //command.CommandText = "select * from partido";
+            var partidos = new List<PartidoDTO>();
 
-            //try
-            //{
-            //    con.Open();
-            //    MySqlDataReader res = command.ExecuteReader();
+            using (var context = new PlaceMyBetContext())
+            {
+                partidos = context.Partidos.Select(p => ToDTO(p)).ToList();
+            }
 
-            //    PartidoDTO p = null;
-            //    List<PartidoDTO> partidos = new List<PartidoDTO>();
-            //    while (res.Read())
-            //    {
-            //        Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetString(1) + " " + res.GetString(2) + " " + res.GetDateTime(3));
-            //        p = new PartidoDTO(res.GetString(1), res.GetString(2));
-            //        partidos.Add(p);
-            //    }
-
-            //    con.Close();
-            //    return partidos;
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Debug.WriteLine("Error al conectar con la base de datos");
-            //    return null;
-            //}
-
-            return null;
+            return partidos;
         }
 
         internal void Save(Partido p)
@@ -74,6 +55,27 @@ namespace PlaceMyBet.Models
             var context = new PlaceMyBetContext();
 
             context.Partidos.Add(p);
+            context.SaveChanges();
+        }
+
+        internal void Update(int id, Partido p)
+        {
+            PlaceMyBetContext context = new PlaceMyBetContext();
+
+            Partido partido = Retrieve(id);
+
+            partido.Local = p.Local;
+            partido.Visitante = p.Visitante;
+            context.SaveChanges();
+        }
+
+        internal void Delete(int id)
+        {
+            PlaceMyBetContext context = new PlaceMyBetContext();
+
+            Partido partido = Retrieve(id);
+
+            context.Partidos.Remove(partido);
             context.SaveChanges();
         }
     }
