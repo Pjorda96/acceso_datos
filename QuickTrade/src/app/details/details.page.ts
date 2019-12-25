@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { data } from '../../global/storage';
 import {IHogar, IInmobiliaria, IMotor, ITecnologia} from '../interfaces';
 import {ActivatedRoute} from '@angular/router';
+import {ElementService} from '../services/element.service';
 
 @Component({
   selector: 'app-details',
@@ -11,11 +11,11 @@ import {ActivatedRoute} from '@angular/router';
 export class DetailsPage implements OnInit {
   element: (IMotor | IInmobiliaria | ITecnologia | IHogar);
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute, private elementService: ElementService) { }
 
   ngOnInit() {
-    const res = this.activatedRoute.snapshot.paramMap.get('id');
-    this.element = data[res];
+    const res: number = parseInt(this.activatedRoute.snapshot.paramMap.get('id'), 10);
+    this.element = this.elementService.getElement(res);
   }
 
 }

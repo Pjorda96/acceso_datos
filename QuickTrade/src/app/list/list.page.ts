@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { data } from '../../global/storage';
 import {IHogar, IInmobiliaria, IMotor, ITecnologia} from '../interfaces';
+import {ElementService} from '../services/element.service';
 
 @Component({
   selector: 'app-list',
@@ -10,10 +10,10 @@ import {IHogar, IInmobiliaria, IMotor, ITecnologia} from '../interfaces';
 export class ListPage implements OnInit {
   data: (IMotor | IInmobiliaria | ITecnologia | IHogar)[];
 
-  constructor() {}
+  constructor(private elementService: ElementService) {}
 
   ngOnInit() {
-    this.data = data;
+    this.data = this.elementService.getElements();
   }
 
 }
