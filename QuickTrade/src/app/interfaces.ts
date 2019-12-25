@@ -12,7 +12,7 @@ export interface IMotor extends IData {
 }
 
 export interface IInmobiliaria extends IData {
-    metrosCuadrados: number;
+    metros_cuadrados: number;
     banos: number;
     habitaciones: number;
     localidad: string;

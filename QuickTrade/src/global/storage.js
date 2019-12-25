@@ -15,7 +15,7 @@ export const data = [
     nombre: 'Dream',
     descripcion: 'Descripción muy pero que muy muy muy muy laaaaaarga y describiendo cosas sin sentido para que sea una descripción laaarga larga y se muestre un parrafito.',
     categoria: 'motor',
-    tipo: 'moto',
+    tipoMotor: 'moto',
     kilometros: 0,
     precio: 65000,
   },

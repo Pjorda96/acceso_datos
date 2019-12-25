@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
-import { data } from '../../global/storage';
 import { IData, IHogar, IInmobiliaria, IMotor, ITecnologia } from '../interfaces';
+import { ElementService } from '../services/element.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   nombre: string;
   descripcion: string;
   categoria: string | undefined = undefined;
@@ -22,8 +22,10 @@ export class HomePage {
   precio: number;
   data: (IMotor | IInmobiliaria | ITecnologia | IHogar)[];
 
-  constructor(private toastController: ToastController) {
-    this.data = data;
+  constructor(private toastController: ToastController, private elementService: ElementService) {}
+
+  ngOnInit() {
+    this.data = this.elementService.getElements();
   }
 
   async toast(message: string, color?: string): Promise<void> {
@@ -53,7 +55,7 @@ export class HomePage {
   insertar(): void {
     const esValido = this.nombre && this.descripcion && this.categoria && this.precio;
     const elemento: IData = {
-      id: data.length + 1,
+      id: this.data.length + 1,
       nombre: this.nombre,
       descripcion: this.descripcion,
       categoria: this.categoria,
@@ -61,7 +63,7 @@ export class HomePage {
     };
 
     if (esValido) {
-      data.push(elemento);
+      this.elementService.putElement(elemento);
       this.toast('Elemento añadido correctamente');
       this.resetForm();
     } else {

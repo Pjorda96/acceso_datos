@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{element.categoria | titlecase}}</ion-card-subtitle>
+      <ion-card-title>
+        {{element.nombre | titlecase}}
+        <small>({{element.precio | currency:'EUR':true}})</small>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div *ngIf="element.categoria === 'inmobiliaria'">
+        <ion-item>
+          Metros cuadrados: {{element.metros_cuadrados}}
+        </ion-item>
+
+        <ion-item>
+          Baños: {{element.banos}}
+        </ion-item>
+
+        <ion-item>
+          Habitaciones: {{element.habitaciones}}
+        </ion-item>
+
+        <ion-item>
+          Localidad: {{element.localidad | titlecase}}
+        </ion-item>
+      </div>
+
+      <div *ngIf="element.categoria === 'motor'">
+        <ion-item>
+          tipo: {{element.tipoMotor | titlecase}}
+        </ion-item>
+
+        <ion-item>
+          Kilómetros: {{element.kilometros}}
+        </ion-item>
+      </div>
+
+      <div *ngIf="element.categoria === 'tecnologia'">
+        <ion-item>
+          Estado: {{element.estado | titlecase}}
+        </ion-item>
+      </div>
+
+      <ion-item>
+        {{element.descripcion}}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="primary" routerLink="/list" routerDirection="back">Lista</ion-button>
+</ion-content>

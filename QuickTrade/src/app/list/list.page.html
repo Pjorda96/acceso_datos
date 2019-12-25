@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>list</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let element of data">
+    <ion-card-header>
+      <ion-card-subtitle>{{element.categoria | titlecase}}</ion-card-subtitle>
+      <ion-card-title>
+        {{element.nombre | titlecase}}
+        <small>({{element.precio | currency:'EUR':true}})</small>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{element.descripcion}}
+
+      <ion-button expand="block" color="primary" [routerLink]="['/details', element.id]" routerDirection="forward">Detalles</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
