@@ -22,7 +22,9 @@ export class HomePage {
   precio: number;
   data: (IMotor | IInmobiliaria | ITecnologia | IHogar)[];
 
-  constructor(private toastController: ToastController) {
+  constructor(private toastController: ToastController) {}
+
+  ngOnInit() {
     this.data = data;
   }
 

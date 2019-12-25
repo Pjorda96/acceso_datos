@@ -86,7 +86,9 @@
     </ion-item>
   </div>
 
-  <ion-button color="primary" (click)="insertar()">Enviar</ion-button>
+  <ion-button expand="block" color="primary" (click)="insertar()">Enviar</ion-button>
+
+  <ion-button expand="block" color="primary" routerLink="/list" routerDirection="root">Lista</ion-button>
 
   <ion-card *ngFor="let element of data">
     <ion-card-header>
