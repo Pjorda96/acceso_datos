@@ -63,7 +63,7 @@ export class HomePage implements OnInit {
     };
 
     if (esValido) {
-      this.elementService.putElement(elemento);
+      this.elementService.setElement(elemento);
       this.toast('Elemento añadido correctamente');
       this.resetForm();
     } else {

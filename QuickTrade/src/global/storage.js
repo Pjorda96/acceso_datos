@@ -2,7 +2,7 @@ export const data = [
   {
     id: 0,
     nombre: 'Paradise',
-    descripcion: 'Descripción muy pero que muy muy muy muy laaaaaarga y describiendo cosas sin sentido para que sea una descripción laaarga larga y se muestre un parrafito.',
+    descripcion: 'Jamón ipsum tócate el Barça aquí no hay tomate. Y a genial picardía los lia charanga vale la sonrisa, orujo mis Alonso y colacao, mi rumbeo Barça una musculitos mete una bola manchego, mis roña paella dolores un Lepe sidra la descafeinado vecinos playita martes 13.',
     categoria: 'inmobiliaria',
     metros_cuadrados: 2000,
     banos: 6,
@@ -13,7 +13,7 @@ export const data = [
   {
     id: 1,
     nombre: 'Dream',
-    descripcion: 'Descripción muy pero que muy muy muy muy laaaaaarga y describiendo cosas sin sentido para que sea una descripción laaarga larga y se muestre un parrafito.',
+    descripcion: 'Jamón ipsum tócate el Barça aquí no hay tomate. Y a genial picardía los lia charanga vale la sonrisa, orujo mis Alonso y colacao, mi rumbeo Barça una musculitos mete una bola manchego, mis roña paella dolores un Lepe sidra la descafeinado vecinos playita martes 13.',
     categoria: 'motor',
     tipoMotor: 'moto',
     kilometros: 0,
@@ -22,7 +22,7 @@ export const data = [
   {
     id: 2,
     nombre: 'Pc',
-    descripcion: 'Descripción muy pero que muy muy muy muy laaaaaarga y describiendo cosas sin sentido para que sea una descripción laaarga larga y se muestre un parrafito.',
+    descripcion: 'Jamón ipsum tócate el Barça aquí no hay tomate. Y a genial picardía los lia charanga vale la sonrisa, orujo mis Alonso y colacao, mi rumbeo Barça una musculitos mete una bola manchego, mis roña paella dolores un Lepe sidra la descafeinado vecinos playita martes 13.',
     categoria: 'tecnologia',
     estado: 'perfecto',
     precio: 2000,
