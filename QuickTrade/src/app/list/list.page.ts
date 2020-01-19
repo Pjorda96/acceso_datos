@@ -8,7 +8,7 @@ import {ElementService} from '../services/element.service';
   styleUrls: ['./list.page.scss'],
 })
 export class ListPage implements OnInit {
-  data: (IData | IMotor | IInmobiliaria | ITecnologia | IHogar)[] = [];
+  data: (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] = [];
 
   constructor(private elementService: ElementService) {}
 
@@ -17,7 +17,11 @@ export class ListPage implements OnInit {
 
     elements.once('value', snapshot => {
       snapshot.forEach(child => {
-        const value = child.val();
+        let value = child.val();
+        value = {
+          ...value,
+          id: child.key,
+        };
         this.data.push(value);
       });
     });

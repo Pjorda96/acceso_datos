@@ -12,13 +12,8 @@ export class ElementService {
     return this.db.database.ref('elements');
   }
 
-  /*getElement(id: number): (IMotor | IInmobiliaria | ITecnologia | IHogar) {
-    console.log(data.filter(el => el.id === id));
-    return data.filter(el => el.id === id)[0];
-  }*/
-
-  getElement(key): firebase.database.Reference {
-    return this.db.database.ref(key);
+  getElement(key: string): firebase.database.Reference {
+    return this.db.database.ref('/elements/' + key);
   }
 
   /*putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData)): void {
