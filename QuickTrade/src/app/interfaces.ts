@@ -1,5 +1,5 @@
 export interface IData {
-    id: number;
+    id?: number;
     nombre: string;
     descripcion: string;
     categoria: string | undefined;
