@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IHogar, IInmobiliaria, IMotor, ITecnologia} from '../interfaces';
+import {IData, IHogar, IInmobiliaria, IMotor, ITecnologia} from '../interfaces';
 import {ElementService} from '../services/element.service';
 
 @Component({
@@ -8,12 +8,18 @@ import {ElementService} from '../services/element.service';
   styleUrls: ['./list.page.scss'],
 })
 export class ListPage implements OnInit {
-  data: (IMotor | IInmobiliaria | ITecnologia | IHogar)[];
+  data: (IData | IMotor | IInmobiliaria | ITecnologia | IHogar)[] = [];
 
   constructor(private elementService: ElementService) {}
 
   ngOnInit() {
-    this.data = this.elementService.getElements();
-  }
+    const elements = this.elementService.getElements();
 
+    elements.once('value', snapshot => {
+      snapshot.forEach(child => {
+        const value = child.val();
+        this.data.push(value);
+      });
+    });
+  }
 }

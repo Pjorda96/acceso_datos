@@ -89,16 +89,4 @@
   <ion-button expand="block" color="primary" (click)="insertar()">Enviar</ion-button>
 
   <ion-button expand="block" color="primary" routerLink="/list" routerDirection="root">Lista</ion-button>
-
-  <ion-card *ngFor="let element of data">
-    <ion-card-header>
-      <ion-card-subtitle>{{element.categoria | titlecase}}</ion-card-subtitle>
-      <ion-card-title>
-        {{element.nombre | titlecase}}
-        <small>({{element.precio | currency:'EUR':true}})</small>
-      </ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>{{element.descripcion}}</ion-card-content>
-  </ion-card>
 </ion-content>

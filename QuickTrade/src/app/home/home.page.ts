@@ -20,12 +20,10 @@ export class HomePage implements OnInit {
   localidad: string;
   estado: string;
   precio: number;
-  data: (IMotor | IInmobiliaria | ITecnologia | IHogar)[];
 
   constructor(private toastController: ToastController, private elementService: ElementService) {}
 
   ngOnInit() {
-    this.data = this.elementService.getElements();
   }
 
   async toast(message: string, color?: string): Promise<void> {
@@ -54,16 +52,40 @@ export class HomePage implements OnInit {
 
   insertar(): void {
     const esValido = this.nombre && this.descripcion && this.categoria && this.precio;
-    const elemento: IData = {
-      id: this.data.length + 1,
+    let element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar = {
       nombre: this.nombre,
       descripcion: this.descripcion,
       categoria: this.categoria,
       precio: this.precio,
     };
 
+    if (this.categoria === 'tecnologia') {
+      element = {
+        ...element,
+        estado: this.estado,
+      };
+    }
+
+    if (this.categoria === 'motor') {
+      element = {
+        ...element,
+        tipoMotor: this.tipoMotor,
+        kilometros: this.kilometros,
+      };
+    }
+
+    if (this.categoria === 'inmobiliaria') {
+      element = {
+        ...element,
+        metros_cuadrados: this.metrosCuadrados,
+        banos: this.banos,
+        habitaciones: this.habitaciones,
+        localidad: this.localidad,
+      };
+    }
+
     if (esValido) {
-      this.elementService.putElement(elemento);
+      this.elementService.setElement(element);
       this.toast('Elemento añadido correctamente');
       this.resetForm();
     } else {
