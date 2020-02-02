@@ -33,4 +33,5 @@ export const emptyElement: IData = {
     descripcion: '',
     categoria: '',
     precio: 0,
+    user: '',
 };

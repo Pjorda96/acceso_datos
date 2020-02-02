@@ -102,7 +102,7 @@ export class ListPage implements OnInit {
     }
 
     if (esValido) {
-      this.elementService.setElement(element);
+      this.elementService.addElement(element);
       this.toast('Elemento añadido correctamente');
       this.resetForm();
     } else {

@@ -24,13 +24,17 @@ export class ElementService {
     return this.db.database.ref('/elements/' + key);
   }
 
-  /*putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData)): void {
-    data.push(element);
-  }*/
-
-  setElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): firebase.database.Reference {
+  addElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): firebase.database.Reference {
     const dbRef = this.db.database.ref('elements');
     return dbRef.push(element);
+  }
+
+  putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData), key: string): void {
+    const ref = this.db.database.ref('elements');
+    ref.child(key).set(element)
+        .catch(err => {
+          throw Error(err);
+        });
   }
 
   deleteElement(key): void {
