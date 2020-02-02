@@ -1,5 +1,6 @@
 export interface IData {
-    id?: number;
+    id?: string;
+    user: string;
     nombre: string;
     descripcion: string;
     categoria: string | undefined;
@@ -25,3 +26,12 @@ export interface ITecnologia extends IData {
 export interface IHogar extends IData {
     empty: boolean;
 }
+
+export const emptyElement: IData = {
+    id: '',
+    nombre: '',
+    descripcion: '',
+    categoria: '',
+    precio: 0,
+    user: '',
+};

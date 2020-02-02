@@ -12,21 +12,50 @@ export class ElementService {
     return this.db.database.ref('elements');
   }
 
-  /*getElement(id: number): (IMotor | IInmobiliaria | ITecnologia | IHogar) {
-    console.log(data.filter(el => el.id === id));
-    return data.filter(el => el.id === id)[0];
-  }*/
+  getMyElements(): firebase.database.Query {
+    const user = 'pjorda96'; // obtener del login
+    const elements = this.db.database.ref('elements');
+    const userkey = this.getUserkey(user);
 
-  getElement(key): firebase.database.Reference {
-    return this.db.database.ref(key);
+    return elements.orderByChild('usuario').equalTo(userkey);
   }
 
-  /*putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData)): void {
-    data.push(element);
-  }*/
+  getElement(key: string): firebase.database.Reference {
+    return this.db.database.ref('/elements/' + key);
+  }
 
-  setElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): firebase.database.Reference {
+  addElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): firebase.database.Reference {
     const dbRef = this.db.database.ref('elements');
     return dbRef.push(element);
+  }
+
+  putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData), key: string): void {
+    const ref = this.db.database.ref('elements');
+    ref.child(key).set(element)
+        .catch(err => {
+          throw Error(err);
+        });
+  }
+
+  deleteElement(key): void {
+    const ref = this.db.database.ref('elements');
+
+    ref.child(key).remove()
+        .catch(err => {
+          throw Error(err);
+        });
+  }
+
+  getUserkey(user): string {
+    const elements = this.db.database.ref('usuarios').orderByChild('nombre').equalTo(user);
+
+    elements.once('value', snapshot => { // TODO: change
+      // console.log(snapshot.val());
+      snapshot.forEach(child => {
+        // console.log(child.key);
+      });
+    });
+
+    return 'usuario2'; // TODO: do it real
   }
 }
