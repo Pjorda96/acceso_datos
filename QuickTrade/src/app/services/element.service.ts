@@ -33,16 +33,25 @@ export class ElementService {
     return dbRef.push(element);
   }
 
+  deleteElement(key): void {
+    const ref = this.db.database.ref('elements');
+
+    ref.child(key).remove()
+        .catch(err => {
+          throw Error(err);
+        });
+  }
+
   getUserkey(user): string {
     const elements = this.db.database.ref('usuarios').orderByChild('nombre').equalTo(user);
 
-    elements.once('value', snapshot => {
-      console.log(snapshot.val());
+    elements.once('value', snapshot => { // TODO: change
+      // console.log(snapshot.val());
       snapshot.forEach(child => {
-        console.log(child.key);
+        // console.log(child.key);
       });
     });
 
-    return 'usuario2';
+    return 'usuario2'; // TODO: do it real
   }
 }

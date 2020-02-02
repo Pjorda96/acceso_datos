@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IData, IHogar, IInmobiliaria, IMotor, ITecnologia, emptyElement} from '../interfaces';
 import {ActivatedRoute} from '@angular/router';
 import {ElementService} from '../services/element.service';
+import {ToastController} from '@ionic/angular';
 
 @Component({
   selector: 'app-details',
@@ -11,7 +12,11 @@ import {ElementService} from '../services/element.service';
 export class DetailsPage implements OnInit {
   element: (IData | IMotor | IInmobiliaria | ITecnologia | IHogar) = emptyElement;
 
-  constructor(private activatedRoute: ActivatedRoute, private elementService: ElementService) { }
+  constructor(
+      private activatedRoute: ActivatedRoute,
+      private elementService: ElementService,
+      private toastController: ToastController,
+  ) { }
 
   ngOnInit() {
     const key: string = this.activatedRoute.snapshot.paramMap.get('id');
@@ -25,6 +30,28 @@ export class DetailsPage implements OnInit {
       };
       this.element = value;
     });
+  }
+
+  async toast(message: string, color?: string): Promise<void> {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      showCloseButton: true,
+    });
+    await toast.present();
+  }
+
+  delete() {
+    const key: string = this.activatedRoute.snapshot.paramMap.get('id');
+
+    try {
+      const res = this.elementService.deleteElement(key);
+
+      this.toast('Elemento eliminado correctamente');
+    } catch (e) {
+      this.toast(e, 'danger');
+    }
   }
 
 }

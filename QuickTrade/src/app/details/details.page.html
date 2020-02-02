@@ -53,6 +53,13 @@
         {{element.descripcion}}
       </ion-item>
     </ion-card-content>
+
+    <div style="display: flex">
+      <ion-button expand="block" color="secondary" [routerLink]="['/edit', element.id]" routerDirection="root" style="width: 50%">
+        Editar
+      </ion-button>
+      <ion-button expand="block" color="danger" style="width: 50%" (click)="delete()" [routerLink]="['/list']">Borrar</ion-button>
+    </div>
   </ion-card>
 
   <ion-button expand="block" color="primary" routerLink="/list" routerDirection="back">Lista</ion-button>

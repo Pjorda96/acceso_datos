@@ -39,7 +39,7 @@ export class ListPage implements OnInit {
       });
     });
 
-    this.elementService.getUserkey(this.user)
+    this.elementService.getUserkey(this.user);
   }
 
   async toast(message: string, color?: string): Promise<void> {
