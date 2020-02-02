@@ -1,5 +1,6 @@
 export interface IData {
     id?: string;
+    user: string;
     nombre: string;
     descripcion: string;
     categoria: string | undefined;

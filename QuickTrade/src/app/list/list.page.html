@@ -86,6 +86,8 @@
 
   <ion-button expand="block" color="primary" (click)="insertar()">Enviar</ion-button>
 
+  <ion-button expand="block" color="primary" (click)="misProductos()">Mis productos</ion-button>
+
   <ion-card *ngFor="let element of data">
     <ion-card-header>
       <ion-card-subtitle>{{element.categoria | titlecase}}</ion-card-subtitle>
