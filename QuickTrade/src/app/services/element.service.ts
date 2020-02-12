@@ -10,25 +10,54 @@ export class ElementService {
     private db: AngularFireDatabase,
   ) { }
 
-  getElements(): firebase.database.Reference {
-    return this.db.database.ref('elements');
+  getElements(): (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] {
+    const data: (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] = [];
+
+    this.db.database
+        .ref('elements')
+        .once('value', snapshot => {
+          snapshot.forEach(child => {
+            let value = child.val();
+            value = {
+              ...value,
+              id: child.key,
+            };
+            data.push(value);
+          });
+        });
+
+    return data;
   }
 
-  getMyElements(): firebase.database.Query {
-    const user = 'pjorda96'; // obtener del login
-    const elements = this.db.database.ref('elements');
-    const userkey = this.getUserkey(user);
+  getMyElements(user: string = 'pjorda96'): (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] {
+    // const userkey = this.getUserkey(user);
+    const data: (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] = [];
 
-    return elements.orderByChild('usuario').equalTo(this.user);
+    this.db.database
+        .ref('elements')
+        .orderByChild('usuario')
+        .equalTo(this.getUserkey())
+        .once('value', snapshot => {
+          snapshot.forEach(child => {
+            let value = child.val();
+            value = {
+              ...value,
+              id: child.key,
+            };
+            data.push(value);
+          });
+        });
+
+    return data;
   }
 
   getElement(key: string): firebase.database.Reference {
     return this.db.database.ref('/elements/' + key);
   }
 
-  addElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): firebase.database.Reference {
+  addElement(element: IData | IMotor | IInmobiliaria | ITecnologia | IHogar): void {
     const dbRef = this.db.database.ref('elements');
-    return dbRef.push(element);
+    dbRef.push(element);
   }
 
   putElement(element: (IMotor | IInmobiliaria | ITecnologia | IHogar | IData), key: string): void {
@@ -39,7 +68,7 @@ export class ElementService {
         });
   }
 
-  deleteElement(key): void {
+  deleteElement(key: string): void {
     const ref = this.db.database.ref('elements');
 
     ref.child(key).remove()
@@ -48,7 +77,7 @@ export class ElementService {
         });
   }
 
-  getUserkey(user = this.user): string {
+  getUserkey(user: string = this.user): string {
     const elements = this.db.database.ref('usuarios').orderByChild('nombre').equalTo(user);
 
     elements.once('value', snapshot => { // TODO: change
@@ -58,6 +87,6 @@ export class ElementService {
       });
     });
 
-    return 'usuario2'; // TODO: do it real
+    return this.user; // TODO: do it real
   }
 }

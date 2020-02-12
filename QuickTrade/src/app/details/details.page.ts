@@ -47,7 +47,7 @@ export class DetailsPage implements OnInit {
     const key: string = this.activatedRoute.snapshot.paramMap.get('id');
 
     try {
-      const res = this.elementService.deleteElement(key);
+      this.elementService.deleteElement(key);
 
       this.toast('Elemento eliminado correctamente');
     } catch (e) {

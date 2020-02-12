@@ -13,18 +13,7 @@ export class MyProductsPage implements OnInit {
   constructor(private elementService: ElementService) { }
 
   ngOnInit() {
-    const elements = this.elementService.getMyElements();
-
-    elements.once('value', snapshot => {
-      snapshot.forEach(child => {
-        let value = child.val();
-        value = {
-          ...value,
-          id: child.key,
-        };
-        this.data.push(value);
-      });
-    });
+    this.data = this.elementService.getMyElements();
   }
 
 }

@@ -14,17 +14,6 @@ export class ListPage implements OnInit {
   constructor(private toastController: ToastController, private elementService: ElementService) {}
 
   ngOnInit() {
-    const elements = this.elementService.getElements();
-
-    elements.once('value', snapshot => {
-      snapshot.forEach(child => {
-        let value = child.val();
-        value = {
-          ...value,
-          id: child.key,
-        };
-        this.data.push(value);
-      });
-    });
+    this.data = this.elementService.getElements();
   }
 }
