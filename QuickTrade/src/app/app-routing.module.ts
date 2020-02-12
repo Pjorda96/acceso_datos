@@ -15,7 +15,19 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     loadChildren: () => import('./edit/edit.module').then( m => m.EditPageModule)
+  },  {
+    path: 'create',
+    loadChildren: () => import('./create/create.module').then( m => m.CreatePageModule)
   },
+  {
+    path: 'my-products',
+    loadChildren: () => import('./my-products/my-products.module').then( m => m.MyProductsPageModule)
+  },
+  {
+    path: 'selector',
+    loadChildren: () => import('./selector/selector.module').then( m => m.SelectorPageModule)
+  },
+
 
 
 ];

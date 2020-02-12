@@ -11,6 +11,7 @@ import {ToastController} from '@ionic/angular';
 })
 export class DetailsPage implements OnInit {
   element: (IData | IMotor | IInmobiliaria | ITecnologia | IHogar) = emptyElement;
+  user = 'usuario2';
 
   constructor(
       private activatedRoute: ActivatedRoute,

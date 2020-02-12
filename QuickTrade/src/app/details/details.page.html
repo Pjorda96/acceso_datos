@@ -54,7 +54,7 @@
       </ion-item>
     </ion-card-content>
 
-    <div style="display: flex">
+    <div *ngIf="user === element.usuario" style="display: flex">
       <ion-button expand="block" color="secondary" [routerLink]="['/edit', element.id]" routerDirection="root" style="width: 50%">
         Editar
       </ion-button>

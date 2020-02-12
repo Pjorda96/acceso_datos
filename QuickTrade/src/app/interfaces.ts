@@ -1,6 +1,6 @@
 export interface IData {
     id?: string;
-    user: string;
+    usuario: string;
     nombre: string;
     descripcion: string;
     categoria: string | undefined;
@@ -33,5 +33,5 @@ export const emptyElement: IData = {
     descripcion: '',
     categoria: '',
     precio: 0,
-    user: '',
+    usuario: '',
 };

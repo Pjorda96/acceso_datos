@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nuevo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="descripcion"></ion-textarea>
+    </ion-item>
+
+    <div
+            [style.margin-bottom.px]="categoria && 30"
+            [style.margin-top.px]="categoria && 30"
+    >
+      <ion-item>
+        <ion-label>Categoria</ion-label>
+        <ion-select placeholder="Selecciona" [(ngModel)]="categoria">
+          <ion-select-option value="tecnologia">Tecnología</ion-select-option>
+          <ion-select-option value="hogar">Hogar</ion-select-option>
+          <ion-select-option value="inmobiliaria">Inmobiliaria</ion-select-option>
+          <ion-select-option value="motor">Motor</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div *ngIf="categoria === 'motor'">
+        <ion-item>
+          <ion-label>Tipo de vehículo</ion-label>
+          <ion-select placeholder="Tipo" [(ngModel)]="tipoMotor">
+            <ion-select-option value="coche">Coche</ion-select-option>
+            <ion-select-option value="moto">Moto</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Kilómetros</ion-label>
+          <ion-input type="number"  [(ngModel)]="kilometros"></ion-input>
+        </ion-item>
+      </div>
+
+      <div *ngIf="categoria === 'inmobiliaria'">
+        <ion-item>
+          <ion-label position="floating">Metros cuadrados</ion-label>
+          <ion-input type="number" [(ngModel)]="metrosCuadrados"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Número de Baños</ion-label>
+          <ion-input type="number" [(ngModel)]="banos"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Número de habitaciones</ion-label>
+          <ion-input type="number" [(ngModel)]="habitaciones"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Localidad</ion-label>
+          <ion-input [(ngModel)]="localidad"></ion-input>
+        </ion-item>
+      </div>
+
+      <div *ngIf="categoria === 'tecnologia'">
+        <ion-item>
+          <ion-label>Estado</ion-label>
+          <ion-select placeholder="Estado" [(ngModel)]="estado">
+            <ion-select-option value="perfecto">Perfecto estado</ion-select-option>
+            <ion-select-option value="usado">Usado</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Precio</ion-label>
+      <ion-input type="number" [(ngModel)]="precio"></ion-input>
+    </ion-item>
+  </div>
+
+  <ion-button expand="block" color="primary" (click)="insertar()">Enviar</ion-button>
+
+  <ion-button expand="block" color="secondary" [routerLink]="['/selector']">Volver</ion-button>
+</ion-content>

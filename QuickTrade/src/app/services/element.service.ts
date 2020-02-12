@@ -4,6 +4,8 @@ import {AngularFireDatabase} from '@angular/fire/database';
 
 @Injectable()
 export class ElementService {
+  user = 'usuario2';
+
   constructor(
     private db: AngularFireDatabase,
   ) { }
@@ -17,7 +19,7 @@ export class ElementService {
     const elements = this.db.database.ref('elements');
     const userkey = this.getUserkey(user);
 
-    return elements.orderByChild('usuario').equalTo(userkey);
+    return elements.orderByChild('usuario').equalTo(this.user);
   }
 
   getElement(key: string): firebase.database.Reference {
@@ -46,7 +48,7 @@ export class ElementService {
         });
   }
 
-  getUserkey(user): string {
+  getUserkey(user = this.user): string {
     const elements = this.db.database.ref('usuarios').orderByChild('nombre').equalTo(user);
 
     elements.once('value', snapshot => { // TODO: change
