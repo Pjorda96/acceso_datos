@@ -71,7 +71,7 @@ export class EditPage implements OnInit {
       descripcion: this.descripcion,
       categoria: this.categoria,
       precio: this.precio,
-      user: this.elementService.getUserkey(this.user),
+      usuario: this.elementService.getUserkey(this.user),
     };
 
     if (this.categoria === 'tecnologia') {
