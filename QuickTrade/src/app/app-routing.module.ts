@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'selector',
     loadChildren: () => import('./selector/selector.module').then( m => m.SelectorPageModule)
   },
+  {
+    path: 'filters',
+    loadChildren: () => import('./filters/filters.module').then( m => m.FiltersPageModule)
+  },
 
 
 

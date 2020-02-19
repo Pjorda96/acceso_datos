@@ -89,4 +89,48 @@ export class ElementService {
 
     return this.user; // TODO: do it real
   }
+
+  // Ejercicio 1
+  searchByName(name: string, user: string = this.user): (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] {
+    const data: (IData | IHogar| IInmobiliaria| IMotor| ITecnologia)[] = [];
+
+    this.db.database
+      .ref('searchs')
+      .orderByChild('user')
+      .equalTo(user)
+      .once('value', snapshot => {
+        snapshot.forEach(child => {
+          let value = child.val();
+          const searchs = value.searchs + '---' + name;
+
+          value = {
+            ...value,
+            searchs,
+          };
+
+          this.db.database.ref('searchs').child(child.key).set(value)
+            .catch(err => {
+              throw Error(err);
+            });
+        });
+      });
+
+    this.db.database
+      .ref('elements')
+      .orderByChild('nombre')
+      .equalTo(name)
+      .once('value', snapshot => {
+        snapshot.forEach(child => {
+          let value = child.val();
+          value = {
+            ...value,
+            id: child.key,
+          };
+          data.push(value);
+        });
+      });
+
+    return data;
+  }
+  // Fin Ejercicio 1
 }
