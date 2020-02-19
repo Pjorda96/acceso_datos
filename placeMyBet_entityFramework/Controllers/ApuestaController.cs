@@ -39,6 +39,17 @@ namespace PlaceMyBet.Controllers
         }
         //Fin Ejercicio 1
 
+        //Ejercicio 2
+        // GETByAmount: api/Apuesta?equipo=Valencia
+        public IEnumerable<Apuesta> GetByEquipo(String equipo)
+        {
+            var repo = new ApuestaRepository();
+            List<Apuesta> a = repo.RetrieveByEquipo(equipo);
+
+            return a;
+        }
+        //Fin Ejercicio 2
+
         // GETByUser: api/Apuesta?email=email
         public IEnumerable<ApuestaDTO> GetByUserEmail(string email)
         {

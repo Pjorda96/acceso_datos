@@ -58,6 +58,22 @@ namespace PlaceMyBet.Models
         }
         //Fin Ejercicio 1
 
+        //Ejercicio 2
+        internal List<Apuesta> RetrieveByEquipo(String equipo)
+        {
+            var apuesta = new List<Apuesta>();
+
+            using (var context = new PlaceMyBetContext())
+            {
+                apuesta = context.Apuestas
+                    .Where(a => a.Mercado.Partido.Local == equipo || a.Mercado.Partido.Visitante == equipo)
+                    .ToList();
+            }
+
+            return apuesta;
+        }
+        //Fin Ejercicio 2
+
         public ApuestaDTO ToDTO(Apuesta a)
         {
             return new ApuestaDTO(a.UsuarioId, a.MercadoId, a.TipoApuesta, a.Cuota, a.Mercado.Tipo, a.Importe);
