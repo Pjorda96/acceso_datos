@@ -74,4 +74,24 @@ namespace PlaceMyBet.Models
 
         public Mercado Mercado { get; set; }
     }
+
+    //Ejercicio 1
+    public class ApuestaAmountDTO
+    {
+        public ApuestaAmountDTO(int usuarioId, int mercadoId)
+        {
+            UsuarioId = usuarioId;
+            MercadoId = mercadoId;
+        }
+
+        public ApuestaAmountDTO()
+        {
+
+        }
+
+        public int UsuarioId { get; set; }
+
+        public int MercadoId { get; set; }
+    }
+    //Fin Ejercicio 1
 }

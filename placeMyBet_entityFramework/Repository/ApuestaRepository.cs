@@ -36,6 +36,28 @@ namespace PlaceMyBet.Models
             return apuesta;
         }
 
+        //Ejercicio 1
+        public ApuestaAmountDTO ToAmountDTO(Apuesta a)
+        {
+            return new ApuestaAmountDTO(a.UsuarioId, a.MercadoId);
+        }
+
+        internal List<ApuestaAmountDTO> RetrieveByAmount(double amount)
+        {
+            var apuesta = new List<ApuestaAmountDTO>();
+
+            using (var context = new PlaceMyBetContext())
+            {
+                apuesta = context.Apuestas
+                    .Where(a => a.Importe >= amount)
+                    .Select(a => ToAmountDTO(a))
+                    .ToList();
+            }
+
+            return apuesta;
+        }
+        //Fin Ejercicio 1
+
         public ApuestaDTO ToDTO(Apuesta a)
         {
             return new ApuestaDTO(a.UsuarioId, a.MercadoId, a.TipoApuesta, a.Cuota, a.Mercado.Tipo, a.Importe);

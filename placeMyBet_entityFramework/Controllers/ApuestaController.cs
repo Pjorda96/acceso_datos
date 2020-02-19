@@ -28,6 +28,17 @@ namespace PlaceMyBet.Controllers
             return a;
         }
 
+        //Ejercicio 1
+        // GETByAmount: api/Apuesta?importe=1
+        public IEnumerable<ApuestaAmountDTO> GetByAmount(double importe)
+        {
+            var repo = new ApuestaRepository();
+            List<ApuestaAmountDTO> a = repo.RetrieveByAmount(importe);
+
+            return a;
+        }
+        //Fin Ejercicio 1
+
         // GETByUser: api/Apuesta?email=email
         public IEnumerable<ApuestaDTO> GetByUserEmail(string email)
         {
